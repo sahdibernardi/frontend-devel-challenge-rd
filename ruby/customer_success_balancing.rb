@@ -8,15 +8,22 @@ class CustomerSuccessBalancing
     @away_customer_success = away_customer_success
   end
 
-  # Returns the ID of the customer success with most customers
   def execute
-    available_css = @customer_success.reject { |cs| @away_customer_success.include?(cs[:id]) }
-    sorted_css = available_css.sort_by { |cs| cs[:score] }
+    available_css = @customer_success.reject {
+      |cs| @away_customer_success.include?(cs[:id])
+    }
+    sorted_css = available_css.sort_by {
+      |cs| cs[:score]
+    }
 
-    sorted_css.each { |cs| cs[:customers] = [] }
+    sorted_css.each {
+      |cs| cs[:customers] = []
+    }
 
     @customers.each do |customer|
-      correct_cs = sorted_css.find { |cs| cs[:score] >= customer[:score] }
+      correct_cs = sorted_css.find {
+        |cs| cs[:score] >= customer[:score]
+      }
       correct_cs[:customers] << customer[:id] if correct_cs
     end
 
@@ -26,10 +33,12 @@ class CustomerSuccessBalancing
 
     sorted_css.each do |cs|
       customers_count = cs[:customers].length
+
       if customers_count > max_customers_count
         max_customers_count = customers_count
         max_customers_cs = cs
       end
+      
       tied_max_customers_cs = cs if customers_count == max_customers_count
     end
 

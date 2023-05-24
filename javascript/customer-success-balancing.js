@@ -4,33 +4,35 @@
  * @param {array} customers
  * @param {array} customerSuccessAway
  */
+
 function customerSuccessBalancing(
   customerSuccess,
   customers,
   customerSuccessAway
 ) {
   const availableCSs = customerSuccess.filter((cs) => customerSuccessAway.includes(cs.id) === false);
-  const sortedCSs = availableCSs.sort((csa, csb) => csa.score - csb.score);
 
-  sortedCSs.forEach((cs) => {
+  availableCSs.sort((csa, csb) => csa.score - csb.score);
+
+  availableCSs.forEach((cs) => {
     cs.customers = [];
   })
 
   customers.forEach((customer) => {
-    const correctCS = sortedCSs.find((cs) => 
+    const correctCS = availableCSs.find((cs) => 
       cs.score >= customer.score
     );
-    if(correctCS){
+
+    if(correctCS) {
       correctCS.customers.push(customer.id);
     }
-  }
-  )
+  })
 
   let maxCustomersCount = 0;
   let maxCustomersCS = null;
   let tiedmaxCustomersCS = null;
 
-  sortedCSs.forEach(cs => {
+  availableCSs.forEach(cs => {
     const customersCount = cs.customers.length;
     if (customersCount > maxCustomersCount) {
       maxCustomersCount = customersCount;
@@ -41,11 +43,7 @@ function customerSuccessBalancing(
     }
   });
 
-  if(!maxCustomersCS){
-    return(0);
-  }
-
-  if (maxCustomersCS && tiedmaxCustomersCS !== maxCustomersCS){
+  if (!maxCustomersCS || tiedmaxCustomersCS !== maxCustomersCS){
     return(0);
   }
 
