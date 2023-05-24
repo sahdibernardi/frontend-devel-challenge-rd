@@ -10,12 +10,36 @@ class CustomerSuccessBalancing
 
   # Returns the ID of the customer success with most customers
   def execute
-    # Write your solution here
+    available_css = @customer_success.reject { |cs| @away_customer_success.include?(cs[:id]) }
+    sorted_css = available_css.sort_by { |cs| cs[:score] }
 
+    sorted_css.each { |cs| cs[:customers] = [] }
 
-    
+    @customers.each do |customer|
+      correct_cs = sorted_css.find { |cs| cs[:score] >= customer[:score] }
+      correct_cs[:customers] << customer[:id] if correct_cs
+    end
+
+    max_customers_count = 0
+    max_customers_cs = nil
+    tied_max_customers_cs = nil
+
+    sorted_css.each do |cs|
+      customers_count = cs[:customers].length
+      if customers_count > max_customers_count
+        max_customers_count = customers_count
+        max_customers_cs = cs
+      end
+      tied_max_customers_cs = cs if customers_count == max_customers_count
+    end
+
+    return 0 if !max_customers_cs || tied_max_customers_cs != max_customers_cs
+
+    max_customers_cs[:id]
+  
   end
 end
+
 
 class CustomerSuccessBalancingTests < Minitest::Test
   def test_scenario_one
