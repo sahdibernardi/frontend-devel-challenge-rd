@@ -9,11 +9,42 @@ function customerSuccessBalancing(
   customers,
   customerSuccessAway
 ) {
-  /**
-   * ===============================================
-   * =========== Write your solution here ==========
-   * ===============================================
-   */
+  const availableCSs = customerSuccess.filter((cs) => customerSuccessAway.includes(cs.id) === false);
+  // console.log(availableCS); Filter is correct according to tests and removes the same CSid.
+  const sortedCSs = availableCSs.sort((csa, csb) => csa.score - csb.score);
+  // console.log(sortedCSS); Sort is correct according to tests and sorts the CSs by score.
+
+  // add a new property to each customer object that is the id of the CS that will be assigned to them.
+  sortedCSs.forEach((cs) => {
+    cs.customers = [];
+  })
+
+  customers.forEach((customer) => {
+    // encontra o cs correto
+    const correctCS = sortedCSs.find((cs) => 
+      cs.score >= customer.score
+    );
+    if(correctCS){
+      correctCS.customers.push(customer.id);
+    }
+  }
+  )
+
+  let maxCustomersCount = 0;
+  let maxCustomersCS = 0;
+
+  sortedCSs.forEach(cs => {
+    const customersCount = cs.customers.length;
+    if (customersCount > maxCustomersCount) {
+      maxCustomersCount = customersCount;
+      maxCustomersCS = cs;
+    }
+  });
+
+  // ver a questão do empate!
+
+  return(maxCustomersCS.id)
+
 }
 
 test("Scenario 1", () => {
