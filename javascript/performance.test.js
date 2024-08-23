@@ -4,9 +4,10 @@ const { mapEntities, buildSizeEntities, arraySeq } = require("./utils");
 const { performance } = require('perf_hooks');
 
 describe("Performance Test", () => {
-  it("should handle large datasets efficiently", () => {
+  describe("should handle large datasets efficiently", () => {
     const numCS = 10000;
     const numCustomers = 1000000;
+    const maxAllowedTime = 5000;
     
     const css = mapEntities(arraySeq(numCS, 1));
     const customers = buildSizeEntities(numCustomers, numCS - 1);
@@ -22,14 +23,19 @@ describe("Performance Test", () => {
     const endTimeOptimized = performance.now();
     const durationOptimized = endTimeOptimized - startTimeOptimized;
 
-    expect(resultOptimized).toEqual(resultOriginal);
-
     console.log(`Original implementation time: ${durationOriginal.toFixed(2)}ms`);
     console.log(`Optimized implementation time: ${durationOptimized.toFixed(2)}ms`);
 
-    expect(durationOptimized).toBeLessThan(durationOriginal);
+    it("should return the same result", () => {
+      expect(resultOptimized).toEqual(resultOriginal);
+    });
 
-    const maxAllowedTime = 5000;
+    it("should be faster than the original implementation", () => {
+    expect(durationOptimized).toBeLessThan(durationOriginal);
+    })
+
+    it("should be faster than the max allowed time", () => {
     expect(durationOptimized).toBeLessThan(maxAllowedTime);
+    })
   });
 });
