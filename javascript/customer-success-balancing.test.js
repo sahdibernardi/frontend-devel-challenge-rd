@@ -1,6 +1,7 @@
 const { customerSuccessBalancing } = require("./customer-success-balancing");
+const { mapEntities, buildSizeEntities, arraySeq } = require("./utils");
 
-fit("Scenario 1", () => {
+it("Scenario 1", () => {
   const css = [
     { id: 1, score: 60 },
     { id: 2, score: 20 },
@@ -19,25 +20,6 @@ fit("Scenario 1", () => {
 
   expect(customerSuccessBalancing(css, customers, csAway)).toEqual(1);
 });
-
-function buildSizeEntities(size, score) {
-  const result = [];
-  for (let i = 0; i < size; i += 1) {
-    result.push({ id: i + 1, score });
-  }
-  return result;
-}
-
-function mapEntities(arr) {
-  return arr.map((item, index) => ({
-    id: index + 1,
-    score: item,
-  }));
-}
-
-function arraySeq(count, startAt){
-  return Array.apply(0, Array(count)).map((it, index) => index + startAt);
-}
 
 it("Scenario 2", () => {
   const css = mapEntities([11, 21, 31, 3, 4, 5]);
