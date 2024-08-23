@@ -1,6 +1,7 @@
-const { customerSuccessBalancing, customerSuccessBalancingOld } = require("./customer-success-balancing");
+const { customerSuccessBalancing } = require("./customer-success-balancing");
+const { customerSuccessBalancingOld } = require("./old-version");
 const { mapEntities, buildSizeEntities, arraySeq } = require("./utils");
-
+const { performance } = require('perf_hooks');
 
 describe("Performance Test", () => {
   it("should handle large datasets efficiently", () => {
